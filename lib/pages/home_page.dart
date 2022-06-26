@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:principais_widgets/pages/pageViews/one_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  // const HomePage({Key? key}) : super(key: key);
+  PageController _pageController = PageController();
+  int indexBottomNavigationBar = 0;
+/*com undeline é somente nessa classe visivel*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,70 +23,44 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
+      body: PageView(
+        controller: _pageController,
         children: [
+          OnePage(),
           Container(
-            height: 200, //MediaQuery.of(context).size.height / 3,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-              shape: BoxShape.rectangle,
-            ),
-            child: Center(
-              child: Text(
-                "Olá Mundo!",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                ),
-              ),
-            ),
+            color: Colors.red,
           ),
-          //Text('Ola mundo'),
-          Row(
-            children: [
-              Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3,
-                color: Colors.red,
-                child: Center(
-                  child: Text("Container 1"),
-                ),
-              ),
-              Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3,
-                color: Colors.purple,
-                child: Center(
-                  child: Text("Container 2"),
-                ),
-              ),
-              Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3,
-                color: Colors.pink,
-                child: Center(
-                  child: Text("Container 3"),
-                ),
-              ),
-            ],
-          ),
+          Container(
+            color: Colors.yellow,
+          )
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.local_laundry_service_sharp),
-          label: 'Item 1',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.local_laundry_service_sharp),
-          label: 'Item 2',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.local_laundry_service_sharp),
-          label: 'Item 3',
-        ),
-      ]),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: indexBottomNavigationBar,
+          onTap: (int page) {
+            setState(() {
+              indexBottomNavigationBar = page;
+            });
+            _pageController.animateToPage(page,
+                duration: Duration(
+                  milliseconds: 300,
+                ),
+                curve: Curves.ease);
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_laundry_service_sharp),
+              label: 'Item 1',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_laundry_service_sharp),
+              label: 'Item 2',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_laundry_service_sharp),
+              label: 'Item 3',
+            ),
+          ]),
     );
   }
 }
